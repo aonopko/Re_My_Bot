@@ -1,16 +1,12 @@
 from aiogram import executor
-from handlers import dp
 
-import filters
-import middlewares
+from loader import dp
+import hendlers
 from utils.notify_admins import on_startup_notify
 
 
 async def on_startup(dp):
-    filters.setup(dp)
-    middlewares.setup(dp)
     await on_startup_notify(dp)
-    await set_default_commands(dp)
 
 
 if __name__ == '__main__':
