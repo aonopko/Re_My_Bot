@@ -7,12 +7,11 @@ choice = InlineKeyboardMarkup(row_width=2,
                                   [
                                       InlineKeyboardButton(
                                           text="Женские",
-                                          callback_data=buy_callback.new(item_name="women_socks",
-                                                                         quantity=2)
+                                          callback_data=buy_callback.new(item_name="women_socks")
                                       ),
                                       InlineKeyboardButton(
                                           text="Мужские",
-                                          callback_data="buy:men_socks:5"
+                                          callback_data="buy:men_socks"
                                       )
                                   ],
                                   [
@@ -23,3 +22,14 @@ choice = InlineKeyboardMarkup(row_width=2,
 
                                   ]
                               ])
+
+deep_choice = InlineKeyboardMarkup(row_width=2,
+                                   inline_keyboard=[
+                                       [
+                                           InlineKeyboardButton(
+                                               text="Зимние",
+                                               callback_data="buy:winter_socks"
+
+                                           )
+                                       ]
+                                   ])
