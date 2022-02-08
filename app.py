@@ -6,9 +6,10 @@ from utils.notify_admins import on_startup_notify
 
 
 async def on_startup(dp):
-    await db.create_table_items()
     await db.create()
-    logger.info(f"База анніх подключена")
+    logger.info(f"База данніх подключена")
+    await db.create_table_items()
+    logger.info(f"Таблица создана")
     await on_startup_notify(dp)
     logger.info(f"Бот запущен")
 
