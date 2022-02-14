@@ -4,8 +4,9 @@ import asyncpg
 from asyncpg import Connection
 from asyncpg.pool import Pool
 
+
 from data import config
-from loguru import logger
+
 
 class Database:
     def __init__(self):
@@ -18,8 +19,6 @@ class Database:
             host=config.DB_HOST,
             database=config.DB_NAME
         )
-        logger.info('Подключился')
-
 
     async def execute(self, command, *args,
                       fetch: bool = False,
@@ -46,12 +45,12 @@ class Database:
         id SERIAL PRIMARY KEY,
         item_name VARCHAR(255) NOT NULL,
         item_discription VARCHAR(255) NOT NULL,
-        item_price BIGINT NOT NULL
+        item_price BIGINT NOT NULL,
         telegram_id BIGINT NOT NULL
         );
         """
         await self.execute(sql, execute=True)
-        logger.info("Таблица создана")
+
 
     @staticmethod
     def format_args(sql, parametrs: dict):
@@ -61,10 +60,15 @@ class Database:
         ])
         return sql, tuple(parametrs.values())
 
+    async def add_item(self, item_name, item_discription,
+                       item_price, telegram_id):
+        sql = """INSERT INTO Items(item_name, item_discription, item_price,
+                telegram_id) VALUES($1, $2, $3, $4) returning *"""
+        return await self.execute(sql, item_name, item_discription, item_price, telegram_id, fetchrow=True)
+
     async def select_all_items(self):
         sql = """ SELECT * FROM Items """
         return await self.execute(sql, fetch=True)
-
 
     async def select_item(self, **kwargs):
         sql = """SELECT * FROM Items WHERE """
@@ -83,7 +87,5 @@ class Database:
         await self.execute("""DELETE FROM Items WHERE TRUE""", execute=True)
 
     async def drop_items(self):
-        await self.execute("""DROP TABLE Users""", execute=True)
-        logger.info("Удалил")
-
+        await self.execute("""DROP TABLE Items""", execute=True)
 
